@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" font-family="Segoe UI, system-ui, sans-serif">
+  <!-- Hintergrund + dezentes Kartenraster -->
+  <rect width="1000" height="640" fill="#10131c"/>
+  <g stroke="#1a1e2a" stroke-width="1">
+    <path d="M80 0V640M160 0V640M240 0V640M320 0V640M400 0V640M480 0V640M560 0V640M640 0V640M720 0V640M800 0V640M880 0V640M960 0V640"/>
+    <path d="M0 80H1000M0 160H1000M0 240H1000M0 320H1000M0 400H1000M0 480H1000M0 560H1000"/>
+  </g>
+
+  <defs>
+    <linearGradient id="alt" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00ffff"/>
+      <stop offset="0.5" stop-color="#ff00ff"/>
+      <stop offset="1" stop-color="#ffff00"/>
+    </linearGradient>
+    <!-- Identisch zu PLANE_PATH in gui_web/map.js -->
+    <path id="plane" d="M50 3 L54 26 L55 34 L95 57 L95 63 L55 49 L53 74 L74 87 L74 92 L52 84 L50 97 L48 84 L26 92 L26 87 L47 74 L45 49 L5 63 L5 57 L45 34 L46 26 Z"/>
+    <g id="heli">
+      <rect x="2" y="44" width="96" height="6" rx="3"/>
+      <polygon points="46,62 54,62 52,92 48,92"/>
+      <rect x="36" y="88" width="28" height="6" rx="2"/>
+      <ellipse cx="50" cy="41" rx="14" ry="29"/>
+      <circle cx="50" cy="47" r="6" fill="#0c0e16" stroke="none"/>
+    </g>
+  </defs>
+
+  <!-- Trail mit Höhengradient -->
+  <g fill="none" stroke-width="3" stroke-linecap="round">
+    <path d="M180 200 L250 218" stroke="#39c6ff"/>
+    <path d="M250 218 L320 245" stroke="#7171ff"/>
+    <path d="M320 245 L390 285" stroke="#aa39ff"/>
+    <path d="M390 285 L440 340" stroke="#e31cff"/>
+    <path d="M440 340 L470 395" stroke="#ff00ff"/>
+    <path d="M470 395 L520 435" stroke="#ff55aa"/>
+    <path d="M520 435 L580 458" stroke="#ffaa55"/>
+  </g>
+
+  <!-- Flugzeuge: rotate() = Kurs (True Track) -->
+  <g stroke="#0c0e16" stroke-width="4" stroke-linejoin="round">
+    <use href="#plane" fill="#8877ff" transform="translate(320,140) rotate(45) scale(0.34) translate(-50,-50)"/>
+    <use href="#plane" fill="#ffb04f" transform="translate(600,260) rotate(90) scale(0.34) translate(-50,-50)"/>
+    <use href="#plane" fill="#ff7788" transform="translate(870,160) rotate(300) scale(0.34) translate(-50,-50)"/>
+    <use href="#plane" fill="#ff11ee" transform="translate(760,420) rotate(210) scale(0.34) translate(-50,-50)"/>
+    <!-- Notfall: roter Ring -->
+    <g transform="translate(480,470)">
+      <circle r="17" fill="none" stroke="#ff2d2d" stroke-width="2.5"/>
+      <use href="#plane" fill="#ff2d2d" transform="rotate(160) scale(0.24) translate(-50,-50)"/>
+    </g>
+    <!-- Helikopter -->
+    <use href="#heli" fill="#11eeff" transform="translate(200,380) rotate(20) scale(0.30) translate(-50,-50)"/>
+    <!-- Bodenverkehr (gedimmt) -->
+    <use href="#plane" fill="#5ac3c9" transform="translate(120,540) rotate(70) scale(0.26) translate(-50,-50)"/>
+    <use href="#plane" fill="#5ac3c9" transform="translate(210,560) rotate(250) scale(0.26) translate(-50,-50)"/>
+  </g>
+
+  <!-- Labels -->
+  <g fill="#f2f4fa" font-size="11" font-weight="600" text-anchor="middle">
+    <text x="320" y="116">AFR900 · 12.000 ft</text>
+    <text x="600" y="236">DLH441 · 38.000 ft</text>
+    <text x="870" y="136">BAW456 · 33.000 ft</text>
+    <text x="760" y="396">EWG51Y · 24.000 ft</text>
+    <text x="480" y="444" fill="#ff5252">⚠ EMERG UAL90 · Squawk 7700</text>
+    <text x="200" y="356">DRF11 · 1.500 ft</text>
+    <text x="120" y="520">RYR789 · GND</text>
+    <text x="210" y="540">DLH902 · GND</text>
+  </g>
+
+  <!-- Legende -->
+  <text x="24" y="34" fill="#00fff5" font-size="15" font-weight="600">Live-Traffic – Flugzeug-Icons nach Kurs &amp; Höhe (PySide6 + Leaflet)</text>
+  <text x="24" y="54" fill="#a0aac2" font-size="11">Farbe = Höhe (Gradient aus colors.json) · Ring = Notfall · gedimmt = am Boden · Rotation = True Track</text>
+  <rect x="740" y="586" width="220" height="14" fill="url(#alt)"/>
+  <text x="740" y="578" fill="#a0aac2" font-size="11">0 ft</text>
+  <text x="960" y="578" fill="#a0aac2" font-size="11" text-anchor="end">45.000 ft</text>
+</svg>

@@ -1,0 +1,27 @@
+Third-party notices
+====================
+
+Leaflet 1.9.4
+-------------
+Leaflet is copyright (c) 2010-2023 Volodymyr Agafonkin and (c) 2010-2011
+CloudMade. It is distributed under the BSD 2-Clause License. The complete
+license text is included at gui_web/leaflet/LICENSE in the source and in the
+bundled GUI assets.
+
+Map tile attribution
+--------------------
+OpenStreetMap tiles: © OpenStreetMap contributors. See
+https://www.openstreetmap.org/copyright.
+
+CARTO basemap tiles: © OpenStreetMap contributors and © CARTO. See
+https://carto.com/attributions.
+
+OpenTopoMap tiles: map data © OpenStreetMap contributors and SRTM; map style
+© OpenTopoMap, CC-BY-SA. See https://opentopomap.org/ and
+https://creativecommons.org/licenses/by-sa/3.0/.
+
+ADS-B source references
+-----------------------
+The application can retrieve public data from adsb.lol, adsb.fi Open Data, and
+OpenSky Network. Their respective terms, attribution requirements, quotas, and
+use restrictions apply; see the Data Sources section of README.md.

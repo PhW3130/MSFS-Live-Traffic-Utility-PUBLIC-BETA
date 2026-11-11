@@ -1,0 +1,3 @@
+# Kopiervorlage: als page.txt neben main.py/exe ablegen (page.txt ist gitignoriert).
+# Erste Nicht-Kommentarzeile = URL der LTU-Webseite (index.php inkl. Statusseite & Web-Relay).
+http://DEIN-SERVER/ltu/index.php

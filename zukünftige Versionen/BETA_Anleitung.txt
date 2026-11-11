@@ -1,0 +1,118 @@
+MSFS LIVE TRAFFIC UTILITY – BETA-ANLEITUNG
+==========================================
+
+Diese Anleitung gilt für Beta-Versionen des MSFS Live Traffic Utility. Die Beta
+kann Fehler enthalten; Verhalten, Datenquellen und Benutzeroberfläche können sich
+noch ändern.
+
+WICHTIGER HINWEIS
+-----------------
+Die App zeigt öffentlich verfügbare ADS-B-Daten zur Information und Simulation an.
+Daten können verspätet, unvollständig oder regional nicht verfügbar sein. Die App
+ist KEIN Navigations-, Dispositions- oder Flugsicherungswerkzeug. Verlasse dich
+nicht auf sie für reale oder simulatorische Sicherheitsentscheidungen.
+
+1. VORAUSSETZUNGEN
+------------------
+- Für das fertige Windows-Paket: Windows 10/11, 64 Bit.
+- Internetverbindung für Kartendarstellung und Live-ADS-B-Daten.
+- Die Live-Karte funktioniert auch ohne gestartetes MSFS.
+- Für die Spielerposition/TCAS-Ansicht: MSFS 2020 oder 2024 muss laufen und über
+  SimConnect erreichbar sein. Dafür werden keine zusätzlichen KI-Flugzeugmodelle
+  benötigt.
+- Für KI-Verkehr im Simulator: zusätzlich kompatible, lokal installierte
+  Flugzeugmodelle. FSLTL-Modelle werden unterstützt/empfohlen, sind aber nicht
+  Bestandteil der App.
+
+2. INSTALLATION UND ERSTER START
+--------------------------------
+1) Lade das bereitgestellte Beta-Paket herunter und entpacke den vollständigen
+   Ordner an einen beschreibbaren Speicherort. Starte die EXE nicht direkt aus
+   einer ZIP-Datei und verschiebe keine einzelnen Dateien aus dem Paket.
+2) Starte „MSFS Live Traffic Utility.exe“.
+3) Die Live-Karte sollte auch dann starten, wenn MSFS noch geschlossen ist.
+   Kartendaten und ADS-B-Verkehr benötigen eine Internetverbindung.
+4) Wird ein Community-Ordner abgefragt, wähle den passenden MSFS-Community-Ordner
+   oder den übergeordneten Packages-Ordner. Die Auswahl wird gespeichert. Ohne
+   Community-Katalog kann die Karte weiterlaufen; KI-Modelltitel können dann aber
+   möglicherweise nicht automatisch gefunden werden.
+
+Start aus dem Quellcode (nur falls du gezielt die Entwicklerfassung testest):
+Python 3.10 oder neuer installieren, im Projektordner „pip install -r
+requirements.txt“ ausführen und danach „python main.py“ starten.
+
+3. LIVE-KARTE UND SPIELERPOSITION
+---------------------------------
+- Ohne TCAS fragt die App den sichtbaren Kartenausschnitt ab. Verschiebe oder
+  zoome die Karte in die gewünschte Region. Das zuletzt verwendete Kartenzentrum
+  wird gespeichert.
+- Für Verkehr in der Nähe des eigenen Flugzeugs starte MSFS und aktiviere in der
+  App „TCAS (MSFS)“. Die Karte und Live-Abfrage folgen dann der SimConnect-
+  Spielerposition; der Abfrageradius beträgt 80 km.
+- Wenn die App vor MSFS gestartet wurde, versucht sie die SimConnect-Verbindung
+  automatisch erneut. Warte, bis der MSFS-Status „verbunden“ meldet.
+- Das eigene Flugzeug wird nur angezeigt, wenn eine gültige Spielerposition
+  empfangen wird. Ist TCAS ausgeschaltet, kann der Spieler außerhalb des sichtbaren
+  Kartenausschnitts liegen; die Live-Abfrage folgt dann weiterhin der Karte.
+- „MSFS AI-Traffic“ schaltet die KI-Verkehrsinjektion ein oder pausiert sie. Das
+  Pausieren stoppt nicht die Positionsaktualisierung für TCAS. Die Live-Karte zeigt
+  ADS-B-Verkehr unabhängig davon, ob KI-Flugzeuge in MSFS eingespeist werden.
+
+4. KI-VERKEHR IN MSFS
+---------------------
+- Stelle sicher, dass MSFS läuft und kompatible Modelle installiert sind.
+- Die App benötigt einen passenden Community-Katalog, um installierte Flugzeugtitel
+  zuzuordnen. Folge gegebenenfalls dem Ordnerdialog beim Start.
+- Aktiviere „MSFS AI-Traffic“, um die Injektion einzuschalten. Beim Pausieren werden
+  von der App erzeugte KI-Flugzeuge wieder entfernt; die Spielerpositionsabfrage
+  bleibt aktiv.
+- KI-Verkehr ist experimentell. Modellzuordnung und Verfügbarkeit hängen von den
+  installierten Flugzeugen und den gelieferten ADS-B-Daten ab. Parkende Füllflugzeuge
+  sind synthetische lokale Simulatorobjekte, keine realen Live-Flüge.
+
+5. FEHLERSUCHE
+--------------
+Keine Flugzeuge auf der Karte:
+- Prüfe die Internetverbindung und den Status der Datenquellen in der App.
+- Ohne TCAS zeigt die Karte den gespeicherten bzw. aktuell sichtbaren Kartenausschnitt.
+  Schwenke in ein Gebiet mit ADS-B-Abdeckung. Anbieter, Reichweite und Aktualität
+  variieren; eine leere Antwort bedeutet nicht automatisch einen App-Fehler.
+- Mit TCAS prüfe, ob MSFS als „verbunden“ angezeigt wird und ob eine gültige
+  Spielerposition empfangen wurde.
+
+Keine Spielerposition/TCAS-Zentrierung:
+- Starte MSFS und lade ein Flugzeug in die Welt; eine bloß installierte SimConnect-DLL
+  ersetzt keine laufende Simulatorverbindung.
+- Warte auf „MSFS: verbunden“ und aktiviere „TCAS (MSFS)“.
+- Wenn die Verbindung ausbleibt, schließe die App nach Möglichkeit regulär und starte
+  sie erneut. Prüfe anschließend das Anwendungsprotokoll.
+
+Keine KI-Flugzeuge im Simulator:
+- Prüfe „MSFS AI-Traffic“, SimConnect und den ausgewählten Community-Ordner.
+- Stelle sicher, dass passende KI-Modelle installiert und vom Katalog erfasst sind.
+  Das Karten-ADS-B kann trotzdem funktionieren, auch wenn kein Modell eingespeist
+  werden kann.
+
+6. FEHLER MELDEN
+----------------
+Bei einem Fehler helfen folgende Angaben:
+- Windows-Version und MSFS-Version (2020/2024),
+- genaue Schritte zum Wiederholen des Problems und erwartetes/tatsächliches Ergebnis,
+- ob TCAS bzw. „MSFS AI-Traffic“ aktiviert war,
+- das zeitgestempelte Anwendungsprotokoll aus „logs“ (falls dort nicht beschreibbar,
+  kann die App einen benutzerspezifischen Speicherort verwenden).
+
+Prüfe das Protokoll vor dem Teilen und entferne private Angaben. Es kann unter anderem
+Zeitpunkte, Flugzeugpositionen, Rufzeichen und lokale Dateipfade enthalten. Fehler
+und Rückmeldungen: https://github.com/PhW3130/Live-Traffic/issues
+
+7. BETA, LIZENZ UND DATENQUELLEN
+-------------------------------
+- Sichere wichtige Einstellungen/Protokolle, bevor du eine neue Beta installierst.
+- Nutze die App nur im Rahmen der mitgelieferten LICENSE. Die Lizenz ist keine
+  Open-Source-Lizenz; eine öffentliche Weitergabe oder Veröffentlichung kann eine
+  vorherige schriftliche Genehmigung erfordern.
+- Kartenkacheln, ADS-B-Daten und Drittanbieter-Komponenten unterliegen eigenen
+  Nutzungsbedingungen. Beachte deren Limits und Attributionshinweise.
+
+Viel Erfolg beim Testen!

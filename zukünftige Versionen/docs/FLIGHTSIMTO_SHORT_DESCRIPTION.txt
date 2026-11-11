@@ -1,0 +1,1 @@
+Follow real-world ADS-B traffic on a standalone live map, with optional SimConnect AI traffic for MSFS 2020/2024. The map works even when the simulator is off.

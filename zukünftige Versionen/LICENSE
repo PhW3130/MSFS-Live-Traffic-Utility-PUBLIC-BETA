@@ -1,0 +1,107 @@
+LIVE TRAFFIC — LIMITED PRIVATE-USE, RESEARCH AND PUBLICATION-PERMISSION LICENSE
+Version 1.0 — 14 October 2026
+
+Copyright (c) 2026 PhW3130. All rights reserved.
+
+IMPORTANT: This is a custom, source-available license. It is not the GNU General
+Public License (GPL), the Affero GPL (AGPL), or an OSI-approved open-source license.
+
+1. Scope and definitions
+
+"Software" means the original source code, documentation, and other project
+materials in this repository to the extent their copyright is owned or controlled
+by PhW3130 (the "Licensor").
+
+"Third-Party Material" means any component, library, asset, model, data, map tile,
+service, or other material that is not owned or controlled by the Licensor,
+including material identified in THIRD_PARTY_NOTICES.txt or in a separate license
+or notice file. Third-Party Material is excluded from this License.
+
+"Research Results" means reports, papers, presentations, benchmark results,
+datasets, analyses, or other findings created through research or testing of the
+Software.
+
+"Research Group" means the licensee and the collaborators or employees who need
+access to the Software for the same private research, testing, or evaluation
+activity, provided each person is informed of and agrees to follow this License.
+
+"Publication" means making the Software, a copy or modified version of it, or
+Research Results available to the public or to persons outside the Research Group,
+including by public repository, website, publication, release, distribution,
+mirror, package, or hosting service. Private sharing within a Research Group under
+this License is not Publication. A confidential email submission of Research
+Results directly to the Licensor, when requested, is not Publication.
+
+2. Limited use and research permission
+
+Subject to this License, the Licensor grants you a personal, non-exclusive,
+non-transferable permission to download, inspect, run, and modify the Software
+for private, non-commercial use and for research, testing, or evaluation. This
+research permission may be used by an individual or within a company, institution,
+or other Research Group, including for internal commercial research and
+development, provided that the Software and Research Results are not Published
+except as allowed under Section 3. The limited access granted to Research Group
+members below is the only exception to the non-transferable nature of this
+permission and does not authorize further sublicensing.
+
+You may provide Research Group members with access to copies or modifications
+only as needed for that research activity. You must provide them with this
+License, ensure they agree to follow it, and remain responsible for their use.
+This permission does not authorize public or external distribution, sale,
+production deployment, or operation of a public service using the Software unless
+the Licensor separately authorizes that specific use by prior email approval
+under Section 3.
+
+3. Prior written email permission for Publication
+
+Before any Publication, you must obtain explicit written permission by email from
+the Licensor. Send requests to: e429_t00_m4ny_r3qu35t5@outlook.com. Permission is
+given only when the Licensor replies affirmatively by email; a request, silence,
+public availability of the Software, or an automated response is not permission.
+
+An authorization applies only to the version, material, purpose, and form of
+Publication expressly described in the approval. Unless the approval expressly
+says otherwise, it does not authorize commercial product use, sublicensing, or
+further redistribution by others.
+
+Any authorized Publication of source code, binaries, or modified versions must
+include clear attribution to PhW3130 and retain applicable copyright and license
+notices. Attribution does not replace the requirement for prior written email
+permission and does not imply endorsement by the Licensor.
+
+4. Third-Party Material and notices
+
+Third-Party Material is governed solely by the license or terms applicable to
+that material, as provided by its respective copyright holder or service
+provider. This License does not grant rights to Third-Party Material, replace its
+license, or itself authorize its redistribution; redistribution is permitted only
+if the applicable third-party terms allow it. You are responsible for identifying
+and complying with those terms. Where a third-party notice or license differs from
+this License, the third-party license governs that material.
+
+Do not remove or alter copyright, attribution, or license notices.
+
+5. Earlier versions and copies
+
+This License applies to the Software to the extent controlled by the Licensor
+and provided with this License. It does not retroactively revoke or alter rights
+already granted for an earlier version or copy under a different license,
+including GPL-3.0 where that license was supplied with the earlier version or
+copy. Those earlier grants remain governed by their respective license terms.
+
+6. Breach and remedies
+
+If you breach this License, the permissions granted to you terminate to the
+extent permitted by applicable law. You must stop the unauthorized use or
+Publication. The Licensor may pursue remedies available under applicable law,
+which may include requesting that the breach stop, seeking an injunction, or
+claiming damages where available. This License does not impose a fixed
+contractual penalty or automatic fine. Mandatory rights and limits under
+applicable law remain unaffected.
+
+7. No warranty
+
+To the maximum extent permitted by applicable law, the Software is provided
+"AS IS", without warranties or conditions of any kind, express or implied. The
+Licensor is not liable for claims or damages arising from use of the Software,
+except to the extent liability cannot lawfully be excluded.

@@ -1,0 +1,1 @@
+Verfolge realen ADS-B-Luftverkehr auf einer eigenständigen Live-Karte – mit optionaler SimConnect-KI-Verkehrsinjektion für MSFS 2020/2024. Die Karte läuft auch ohne gestarteten Simulator.

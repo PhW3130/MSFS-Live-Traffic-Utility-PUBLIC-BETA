@@ -39,9 +39,9 @@ Follow each data provider's terms, attribution requirements, and usage limits. S
 
 ## License and third-party notices
 
-The project is distributed under its custom limited-use license, not under the GPL or an open-source license. Review the included `LICENSE` before use. Re-uploading or redistributing the application, its source, or modified versions requires prior written permission as described there; approved code publications must credit PhW3130.
+The project's original code is licensed under the GNU Affero General Public License v3.0 only (AGPL-3.0-only); see the included `LICENSE`. If you modify the program and let users interact with your modified version remotely over a network, AGPLv3 section 13 requires you to offer those users the corresponding source code.
 
-Third-party components, assets, models, map tiles, and data remain under their respective licenses and terms. The project license does not replace those terms. FSLTL aircraft models are not included.
+Third-party components, assets, models, map tiles, and data remain under their respective licenses and terms; the project license does not replace those terms. See `THIRD_PARTY_NOTICES.txt` and `docs/PUBLISHING-CHECKLIST.md`. FSLTL aircraft models are not included.
 
 ## Support and feedback
 
@@ -94,9 +94,9 @@ Bitte beachte die Nutzungsbedingungen, Attributionspflichten und Limits jedes Da
 
 ## Lizenz und Drittanbieterhinweise
 
-Das Projekt verwendet eine eigene, eingeschränkte Lizenz und steht weder unter der GPL noch unter einer Open-Source-Lizenz. Bitte lies vor der Nutzung die mitgelieferte `LICENSE`. Das erneute Hochladen oder Weiterverteilen der Anwendung, des Quellcodes oder geänderter Fassungen erfordert die dort beschriebene vorherige schriftliche Erlaubnis; genehmigte Codeveröffentlichungen müssen PhW3130 nennen.
+Der projekt-eigene Code steht unter der GNU Affero General Public License v3.0 only (AGPL-3.0-only); siehe die mitgelieferte `LICENSE`. Wenn du das Programm änderst und deine geänderte Version Nutzern über ein Netzwerk bereitstellst, verlangt Abschnitt 13 der AGPLv3, diesen Nutzern den entsprechenden Quellcode anzubieten.
 
-Drittanbieter-Komponenten, Dateien, Modelle, Kartenkacheln und Daten bleiben jeweils unter ihren eigenen Lizenzen und Nutzungsbedingungen. Die Projektlizenz ersetzt diese Bedingungen nicht. FSLTL-Flugzeugmodelle sind nicht enthalten.
+Drittanbieter-Komponenten, Dateien, Modelle, Kartenkacheln und Daten bleiben jeweils unter ihren eigenen Lizenzen und Nutzungsbedingungen; die Projektlizenz ersetzt diese Bedingungen nicht. Siehe `THIRD_PARTY_NOTICES.txt` und `docs/PUBLISHING-CHECKLIST.md`. FSLTL-Flugzeugmodelle sind nicht enthalten.
 
 ## Support und Rückmeldungen
 

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Live Traffic Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="leaflet/leaflet.css"
+      onerror="window.ltuMapAssetError=this.href||'leaflet/leaflet.css'; console.error('[LTU] Leaflet stylesheet failed to load:', window.ltuMapAssetError); window.ltuSetMapNotice && window.ltuSetMapNotice('asset_failed')">
+<script src="leaflet/leaflet.js"
+        onerror="window.ltuMapAssetError=this.src||'leaflet/leaflet.js'; console.error('[LTU] Leaflet script failed to load:', window.ltuMapAssetError); window.ltuSetMapNotice && window.ltuSetMapNotice('asset_failed')"></script>
+<script src="qrc:///qtwebchannel/qwebchannel.js"
+        onerror="window.ltuQWebChannelLoadError='qrc:///qtwebchannel/qwebchannel.js failed to load'; console.error('[LTU] Qt WebChannel script failed to load')"></script>
+<style>
+  :root {
+    --label-color: #f2f4fa;
+    --accent: #4da3ff;
+  }
+  html, body { margin: 0; padding: 0; height: 100%; background: #10131c; }
+  #map { position: absolute; inset: 0; background: #10131c; }
+
+  .acwrap { background: transparent; border: none; }
+  .ac { position: relative; }
+  .ac svg {
+    position: absolute; inset: 0; overflow: visible;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.85));
+  }
+  .ac.sel svg { filter: drop-shadow(0 0 6px rgba(255,255,255,.75)); }
+  .ac.own svg { filter: drop-shadow(0 0 8px rgba(77,163,255,.95)); }
+  .ac .lbl {
+    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    margin-bottom: 2px;
+    color: var(--label-color);
+    font: 600 11px/1.35 "Segoe UI", system-ui, sans-serif;
+    text-align: center; white-space: pre; pointer-events: none;
+    text-shadow: 0 1px 3px #000, 0 0 2px #000;
+  }
+  .ac .lbl.emerg { color: #ff5252; }
+
+  .leaflet-container { font: 12px "Segoe UI", system-ui, sans-serif; }
+  .leaflet-control-attribution {
+    background: rgba(16,19,28,.7) !important; color: #8b93a7 !important;
+    font-size: 10px !important;
+  }
+  .leaflet-control-attribution a { color: #aab4c8 !important; }
+  .leaflet-bar a {
+    background: #1b2130 !important; color: #dfe6f3 !important;
+    border-bottom: 1px solid #2a3245 !important;
+  }
+  .leaflet-bar a:hover { background: #263048 !important; }
+  .leaflet-tooltip {
+    background: #1b2130; border: 1px solid #2a3245; color: #dfe6f3;
+    font-weight: 600;
+  }
+  .leaflet-tooltip-top:before { border-top-color: #2a3245; }
+
+  #map-notice {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    z-index: 1200; max-width: min(520px, calc(100% - 36px));
+    padding: 13px 18px; border: 1px solid #44506b; border-radius: 10px;
+    background: rgba(16,19,28,.94); color: #dfe6f3;
+    font: 600 13px/1.5 "Segoe UI", system-ui, sans-serif;
+    text-align: center; box-shadow: 0 8px 28px rgba(0,0,0,.35);
+    pointer-events: none; white-space: pre-wrap;
+  }
+  #map-notice[hidden] { display: none !important; }
+
+  /* Status-Overlay (Quellen + Mesh-Rolle) */
+  #netstatus {
+    position: absolute; top: 10px; right: 10px; z-index: 1000;
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end;
+    max-width: 60%;
+    font: 600 11px/1 "Segoe UI", system-ui, sans-serif;
+    pointer-events: none;
+  }
+  #netstatus .nd, #netstatus .nrole {
+    background: rgba(16,19,28,.82); border: 1px solid #2a3245;
+    border-radius: 10px; padding: 4px 9px; color: #8b93a7;
+  }
+  #netstatus .nd:before { content: "●"; margin-right: 4px; }
+  #netstatus .nd.ok { color: #3ddc84; }
+  #netstatus .nd.warn { color: #ffb020; }
+  #netstatus .nd.bad { color: #ff5252; }
+  #netstatus .nrole { color: #4da3ff; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="netstatus"></div>
+<div id="map-notice" role="status" aria-live="polite">Karte wird geladen …</div>
+<script>
+(function () {
+  const fragmentParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  const queryParams = new URLSearchParams(window.location.search);
+  const requested = fragmentParams.get("lang") || queryParams.get("lang");
+  const language = requested === "en" ? "en" : "de";
+  window.ltuMapLanguage = language;
+  document.documentElement.lang = language;
+  const messages = {
+    de: {
+      loading: "Karte wird geladen …",
+      fallback: "Keine Kartenkacheln sichtbar – ein alternativer Kartenserver wird versucht …",
+      init_failed: "Kartenansicht konnte nicht initialisiert werden. Bitte App-Log prüfen.",
+      asset_failed: "Eine lokale Kartenkomponente fehlt oder konnte nicht geladen werden. App-Dateien und Log prüfen.",
+      bridge_failed: "Karte geladen, aber die Verbindung zur App fehlt. Bitte App-Log prüfen.",
+      viewport_failed: "Der Kartenbereich hat keine sichtbare Größe. Fenstergröße prüfen; erneuter Versuch läuft.",
+      tiles_failed: "Kartenkacheln konnten nicht geladen werden. Internet, Kartenanbieter und Kartengröße prüfen.",
+    },
+    en: {
+      loading: "Loading map …",
+      fallback: "No map tiles are visible — trying an alternate tile server …",
+      init_failed: "The map could not be initialized. Please check the application log.",
+      asset_failed: "A local map component is missing or could not be loaded. Check the application files and log.",
+      bridge_failed: "The map loaded, but its connection to the app is unavailable. Please check the application log.",
+      viewport_failed: "The map area has no visible size. Check the window size; a retry is in progress.",
+      tiles_failed: "Map tiles could not be loaded. Check the internet connection, tile provider, and map viewport.",
+    },
+  };
+  const notice = document.getElementById("map-notice");
+  window.ltuSetMapNotice = function (key, detail) {
+    window.ltuMapNoticeKey = key || null;
+    if (!notice) return;
+    if (!key) {
+      notice.hidden = true;
+      return;
+    }
+    let message = messages[language][key] || messages[language].init_failed;
+    if (key === "asset_failed" && !detail && window.ltuMapAssetError) {
+      detail = window.ltuMapAssetError;
+    }
+    if (detail) message += "\n" + String(detail).slice(0, 320);
+    notice.textContent = message;
+    notice.hidden = false;
+  };
+  function reportRuntimeError(message) {
+    const detail = String(message || "Uncaught map JavaScript error").slice(0, 320);
+    window.ltuMapRuntimeError = detail;
+    console.error("[LTU] Map JavaScript error:", detail);
+    if (!window.ltuMapVisualReady) window.ltuSetMapNotice("init_failed", detail);
+  }
+  window.addEventListener("error", function (event) {
+    if (event && event.target && event.target !== window) return;
+    const location = event && event.filename
+      ? ` (${String(event.filename).split("/").pop()}:${event.lineno || 0})` : "";
+    reportRuntimeError(`${event && event.message || "Uncaught map JavaScript error"}${location}`);
+  }, true);
+  window.addEventListener("unhandledrejection", function (event) {
+    const reason = event && event.reason;
+    reportRuntimeError(reason && (reason.stack || reason.message) || reason);
+  });
+  window.ltuSetMapNotice("loading");
+  if (window.ltuMapAssetError) window.ltuSetMapNotice("asset_failed");
+  window.setTimeout(function () {
+    if (window.ltuMapAssetError) {
+      window.ltuSetMapNotice("asset_failed");
+      return;
+    }
+    if (window.ltuMapVisualReady) return;
+    if (window.ltuMapRuntimeError) {
+      window.ltuSetMapNotice("init_failed", window.ltuMapRuntimeError);
+      return;
+    }
+    if (window.ltuMapStartupStage === "map-zero-size") {
+      window.ltuSetMapNotice("viewport_failed");
+      return;
+    }
+    window.ltuSetMapNotice(window.ltuLeafletCreated ? "tiles_failed" : "init_failed");
+  }, 12000);
+})();
+</script>
+<script src="map.js"
+        onerror="window.ltuMapAssetError=this.src||'map.js'; console.error('[LTU] Map script failed to load:', window.ltuMapAssetError); window.ltuSetMapNotice && window.ltuSetMapNotice('asset_failed')"></script>
+</body>
+</html>

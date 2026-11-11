@@ -109,9 +109,11 @@ und Rückmeldungen: https://github.com/PhW3130/Live-Traffic/issues
 7. BETA, LIZENZ UND DATENQUELLEN
 -------------------------------
 - Sichere wichtige Einstellungen/Protokolle, bevor du eine neue Beta installierst.
-- Nutze die App nur im Rahmen der mitgelieferten LICENSE. Die Lizenz ist keine
-  Open-Source-Lizenz; eine öffentliche Weitergabe oder Veröffentlichung kann eine
-  vorherige schriftliche Genehmigung erfordern.
+- Der projekt-eigene Code steht unter der GNU Affero General Public License v3.0
+  (AGPL-3.0-only); siehe LICENSE. Bei geänderten Netzwerkversionen gelten die
+  Quellcode-Angebotspflichten aus Abschnitt 13 der AGPLv3.
+- Drittanbieter-Dateien, Daten und Dienste unterliegen weiterhin ihren eigenen
+  Lizenzen und Nutzungsbedingungen.
 - Kartenkacheln, ADS-B-Daten und Drittanbieter-Komponenten unterliegen eigenen
   Nutzungsbedingungen. Beachte deren Limits und Attributionshinweise.
 

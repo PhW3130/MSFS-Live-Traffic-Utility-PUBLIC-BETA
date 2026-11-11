@@ -1,16 +1,18 @@
 # MSFS Live Traffic Utility
 
-MSFS Live Traffic Utility is a source-available Python desktop application that displays real-world ADS-B traffic on an interactive map and can inject matching AI traffic into Microsoft Flight Simulator using SimConnect.
+MSFS Live Traffic Utility is an open-source Python desktop application that displays real-world ADS-B traffic on an interactive map and can inject matching AI traffic into Microsoft Flight Simulator using SimConnect.
 
 Since v2 the GUI is built with **PySide6 (Qt)**: a modern dark-themed desktop window with a hardware-accelerated map view (QtWebEngine + Leaflet), rotated SVG aircraft icons, live aircraft table and detail panel.
 
-The goal of this project is to provide a lightweight and transparent alternative for viewing real-world air traffic and optionally using compatible AI traffic in Microsoft Flight Simulator. Use and redistribution are subject to the custom license below.
+The goal of this project is to provide a lightweight and transparent alternative for viewing real-world air traffic and optionally using compatible AI traffic in Microsoft Flight Simulator. Project-authored code is licensed under the GNU Affero General Public License v3.0 only (AGPL-3.0-only); see [`LICENSE`](LICENSE). Third-party components and data remain subject to their own licenses and terms.
 
 ## Features
 
 - Real-time ADS-B aircraft tracking
-- Modern Qt desktop GUI (PySide6) with dark theme (customizable via `colors.json`)
-- Interactive map (QtWebEngine + Leaflet, tile server switchable: satellite, hybrid, OSM, dark, topo)
+- Modern Qt desktop GUI (PySide6) with a dark theme and a tabbed Settings dialog
+  (local fallback key, map, appearance, filters/network and MSFS options)
+- Interactive map (QtWebEngine + Leaflet, switchable OpenStreetMap, dark CARTO,
+  OpenTopoMap or an attributed custom tile server)
 - **Proper aircraft icons**: rotated top-view SVG silhouettes (airliner & helicopter),
   colored by altitude, dimmed when on ground, red alert ring for emergencies
   (see `docs/gui_preview.svg`)
@@ -34,8 +36,9 @@ The goal of this project is to provide a lightweight and transparent alternative
   the view follows you, and the info panel shows clock position, distance (km/nm),
   altitude difference and climb/descent trend of the selected traffic
 - **CSV export** of the current traffic snapshot (semicolon-delimited, Excel-friendly)
-- **Settings persistence** (QSettings): window geometry, map center/zoom, style and
-  all filter/toggle states are restored on the next start
+- **Settings persistence** (QSettings): window geometry, map center/zoom, style,
+  appearance, source/network, MSFS and filter preferences are stored per user and
+  restored on the next start; the PlaneTrack API key stays out of `colors.json` and releases
 - **Always-on live map**: starts in all-aircraft mode automatically and remains
   available when MSFS/SimConnect is not running. A running MSFS/SimConnect connection
   is needed for player-position follow/TCAS and optional AI injection; if MSFS starts
@@ -43,8 +46,14 @@ The goal of this project is to provide a lightweight and transparent alternative
 - **Timestamped diagnostics**: each launch creates a log in `logs/` (with a writable
   user-data fallback) containing timestamped output, UI actions, settings changes,
   source requests/status changes, and MSFS/mesh events
-- **Failover chain**: proxy → **Ersatz-Proxy (peer mesh)** → adsb.lol → adsb.fi →
-  OpenSky (converted) → last cache
+- **Failover chain**: proxy → **Ersatz-Proxy (peer mesh)** → automatic direct fallback →
+  last cache. Regional sources run in order adsb.lol → adsb.fi → OpenSky → optional
+  PlaneTrack.ai. PlaneTrack is the fourth ordinary source, not a separately preferred
+  provider in Settings; the proxy collector uses its own local credential file.
+- **PlaneTrack.ai**: optional fourth source in the proxy collector chain; its key is
+  collector-only and is never sent to clients or included in public status. A separate,
+  per-user key can optionally enable the client's final direct fallback when proxy and
+  mesh are unavailable. Requests are spaced by 2.5 seconds and capped at 250 NM.
 - **Peer mesh via web relay – zero router/firewall config**: all mesh traffic is routed
   through the proxy web page. When the proxy is down **or returns HTTP 429**, the server
   elects one client *randomly* as Ersatz-Proxy; it pushes its own traffic data to the
@@ -52,7 +61,7 @@ The goal of this project is to provide a lightweight and transparent alternative
   (`?action=relay_pull`). If the Ersatz fails or is itself rate-limited, the **next**
   one takes over (chained failover) – works across the internet, no ports needed
 - **Status LEDs** in the GUI status bar (proxy / adsb.lol / adsb.fi / OpenSky /
-  Ersatz-Proxy / MSFS: green = ok, orange = 429, red = down, grey = idle) plus the
+  PlaneTrack / Ersatz-Proxy / MSFS: green = ok, orange = 429, red = down, grey = idle) plus the
   current mesh role; the same status is shown as an overlay on the web map
 - **Public status page**: upload the proxy as `index.php` and opening the LTU folder
   shows live status right away (also via `?action=statuspage`): who is online, which part
@@ -75,6 +84,7 @@ The goal of this project is to provide a lightweight and transparent alternative
 | Module            | Purpose                                                                 |
 | ----------------- | ----------------------------------------------------------------------- |
 | `main.py`         | Qt view: window, toolbar, table, info panel, QWebEngineView + QWebChannel bridge |
+| `settings_dialog.py` | Tabbed PySide6 settings UI; MainWindow applies and persists user preferences |
 | `traffic_core.py` | Framework-independent engine: ADS-B polling, filters, selection, trail, route, state snapshots |
 | `msfs_ai.py`      | SimConnect stack: EX1/parked spawns, position updates, AI traffic loop (thread) |
 | `startup_splash.py` | Animated startup screen and flight-profile indicator                    |
@@ -171,25 +181,40 @@ GitHub Release. `.github/workflows/ci.yml` runs both test suites on every push/P
 
 ## Configuration
 
-The user interface can be customized through the `colors.json` file.
+Use the **⚙ Settings** button in the Qt application for normal user preferences. The
+multi-tab dialog edits the optional local PlaneTrack direct-fallback key, proxy and peer
+mesh, map style and custom tiles, center/zoom, theme colors and altitude gradient, icon
+sizes, traffic filters, refresh interval, and MSFS AI/SimConnect options. There is no
+selectable preferred-provider control. User values are saved in per-user `QSettings`; the
+optional client key is not written to `colors.json` or packaged releases. The proxy's
+independent PlaneTrack key is configured only on the collector PC. `colors.json` remains
+the shipped/default configuration. `PLANETRACK_API_KEY`, `LTU_PROXY_URL`, and `LTU_MESH`
+can still override their corresponding local settings.
 
-Examples:
+Other configuration details:
 
-- Map styles: OpenStreetMap, dark CARTO, OpenTopoMap, and an optional custom tile URL with its provider attribution
-- Custom UI themes (Qt dark theme generated from these colors)
-- Custom altitude color gradients
-- Icon sizes, label color, emergency color, accent color
-- `peer_net`: web-relay mesh on/off (also via `LTU_MESH=off`)
+- Available built-in map styles: OpenStreetMap, dark CARTO and OpenTopoMap; a custom
+  tile URL must include `{z}`, `{x}`, `{y}` and a provider attribution.
+- `colors.json` can still be edited by developers/distributors to change shipped
+  defaults for the Qt theme, altitude gradient, icons, proxy and mesh.
 - `page.txt` (gitignored, next to `main.py`/the exe): URL of the proxy web page –
-  see "Statusanzeige & Ersatz-Proxy (Peer-Mesh über die Webseite)"
+  see "Statusanzeige & Ersatz-Proxy (Peer-Mesh über die Webseite)".
 
 ## GUI Usage
 
-- The GUI starts automatically in live mode with all aircraft; this works without MSFS. **Start** tracks the entered flight number; leave the field empty (or tick “All aircraft”) to return to all-traffic mode.
+- The GUI starts automatically in live mode (all aircraft by default, restoring the saved
+  “All aircraft” choice) and works without MSFS. **Start** tracks the entered flight
+  number; leave the field empty (or tick “All aircraft”) to return to all-traffic mode.
 - Click an aircraft icon on the map or a row in the table to select it; `Esc` deselects.
 - Double-click a table row to follow the aircraft and zoom in.
 - `+` / `-` zoom the map; right-click offers “select nearest aircraft”.
 - When a simulator connection is detected, the “MSFS AI traffic” checkbox enables/disables AI traffic injection while the map keeps running.
+- Click **⚙ Settings** to configure the optional local direct-fallback key, network/map/
+  filter/theme settings and MSFS paths/AI limits; the provider order is automatic. Previous
+  app defaults are marked beside
+  their fields; **Load defaults** restores them while keeping API/proxy credentials, the
+  mesh name, and local MSFS paths. Changes apply immediately where possible; a Community
+  folder or SimConnect DLL change requires an app restart.
 - Row 3 of the toolbar: **Search** (typing filters table+map, `Enter` selects/jumps to the
   first match), **Airline** and **Type** filters, **Trails** (flight paths for all aircraft),
   **TCAS (MSFS)** (own position + relative data for the selected aircraft),
@@ -259,12 +284,43 @@ anderen OpenSky-Nutzer hinter derselben öffentlichen IP. Eine strikte gemeinsam
 IP-Quote kann der Client daher nicht garantieren; für Gruppen den Collector-Proxy
 verwenden. Der GUI-Client erhält niemals OAuth2-Zugangsdaten oder das Collector-Token.
 
-Der Collector nutzt im demand-gesteuerten Betrieb Regionalabfragen von adsb.lol
-und adsb.fi nur für aktuelle Client-Bereiche; adsb.fi und danach optional OpenSky
-werden nur bei Ausfall der vorherigen Quelle versucht. Eine weltweite Suche wird
-allein nach ausdrücklicher Client-Anfrage über den OpenSky-Collector-Snapshot
-bedient. Der frühere adsb.lol-Global-Endpunkt und das dauerhafte Kachel-Weltraster
-sind aus dem Collector entfernt.
+Der Collector nutzt im demand-gesteuerten Betrieb Regionalabfragen nur für
+aktuelle Client-Bereiche. Die feste Failover-Reihenfolge lautet adsb.lol → adsb.fi
+→ OpenSky → PlaneTrack.ai; OpenSky bleibt die dritte Quelle, PlaneTrack ist die
+optionale vierte. PlaneTrack wird nur mit lokalem Collector-Key versucht; ohne
+gültige Konfiguration wird es übersprungen. Eine weltweite Suche wird allein nach
+ausdrücklicher Client-Anfrage über den OpenSky-Collector-Snapshot bedient. Der
+frühere adsb.lol-Global-Endpunkt und das dauerhafte Kachel-Weltraster sind aus dem
+Collector entfernt.
+
+### PlaneTrack credential setup (collector only)
+
+1. On the proxy/collector PC, copy `proxy/planetrack_credentials.example.json` to
+   `planetrack_credentials.json` next to `ltu_collector.exe` and enter the API key in
+   `planeTrackApiKey`.
+2. Restrict the file's OS permissions to the collector account. Its default name is
+   gitignored; if you use a custom `planetrack_credentials=` path in
+   `ltu_collector.ini`, keep that file outside Git as well.
+3. The collector sends the key only in the HTTPS `api-auth` header to PlaneTrack.ai.
+   It is never included in collector logs, pushes to PHP, client responses, releases,
+   or public status data. The PHP status shows only provider name, HTTP result and age.
+
+### Direct and proxy source order
+
+There is no source-preference selector in the desktop Settings. Proxy and peer-mesh
+relay are tried first. The proxy collector's regional chain is adsb.lol → adsb.fi →
+OpenSky → PlaneTrack.ai; OpenSky remains third and PlaneTrack is the optional fourth
+source. PlaneTrack is skipped when its collector credential file is absent or invalid.
+The desktop client's own direct fallback uses the same order when proxy/mesh are
+unavailable; its per-user key is independent from the collector's key.
+
+PlaneTrack calls `/v1/sim/v2/point/{lat}/{lon}/{radius}` and sends the key in the
+`api-auth` request header. Requests are spaced by at least 2.5 seconds and radius is
+capped at 250 NM. The collector key is read only from
+`planetrack_credentials.json` beside `ltu_collector.exe`; a tracked placeholder is in
+`proxy/planetrack_credentials.example.json`. The local credential file is gitignored,
+never copied to the PHP proxy, and its key is not published by the status endpoint.
+The optional desktop direct-fallback key is stored in the current user's `QSettings`.
 
 ## Proxy-Betrieb: ein Sammler für alle Clients (optional)
 
@@ -503,19 +559,18 @@ from ADS-B data feeds.
 
 ## License
 
-The project-owned code and materials in the current version are under the custom
-Limited Private-Use, Research and Publication-Permission License in [`LICENSE`](LICENSE).
-It is **not GPL and not an open-source license**. Private, non-commercial use and
-research/testing—including internal research in a company or institution—are
-permitted under the license. Public release or sharing outside the bound research
-group of code, modified versions, or research results requires prior written
-approval by email at `e429_t00_m4ny_r3qu35t5@outlook.com`. Approved code publication
-must credit PhW3130. Third-party components and data remain under their respective
-licenses and terms.
+Copyright (C) 2026 PhW3130. The project's original code is licensed under the
+**GNU Affero General Public License v3.0 only (AGPL-3.0-only)**; see
+[`LICENSE`](LICENSE). You may use, modify, and redistribute it under that license's
+terms. If you modify the program and let users interact with your modified version
+remotely over a network, AGPLv3 section 13 requires you to offer those users the
+corresponding source code.
 
-This change does not retroactively revoke rights already granted for earlier
-versions or copies distributed under GPL-3.0; the license supplied with each such
-version continues to govern those copies.
+Third-party components, assets, data, map tiles, and services are not relicensed by
+this project license and remain subject to their respective licenses and terms; see
+[`THIRD_PARTY_NOTICES.txt`](THIRD_PARTY_NOTICES.txt) and
+[`docs/PUBLISHING-CHECKLIST.md`](docs/PUBLISHING-CHECKLIST.md). This change does not
+alter the license accompanying copies of earlier versions.
 
 ## Disclaimer
 

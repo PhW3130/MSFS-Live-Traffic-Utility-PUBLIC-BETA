@@ -1,0 +1,54 @@
+{
+  "map_settings": {
+    "tile_server_url": "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "tile_attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+    "tile_max_zoom": 19,
+    "comment": "Eigene Tile-URL, korrekte Attribution und tile_max_zoom gemeinsam konfigurieren. Nur Tile-Anbieter verwenden, deren Nutzungsbedingungen die Verwendung erlauben."
+  },
+  "altitude_gradient": {
+    "low": [
+      0,
+      255,
+      255
+    ],
+    "mid": [
+      255,
+      0,
+      255
+    ],
+    "high": [
+      255,
+      255,
+      0
+    ]
+  },
+  "gui_theme": {
+    "main_bg": "#1a1a2e",
+    "panel_bg": "#16213e",
+    "text_color": "#00fff5",
+    "entry_bg": "#0f3460",
+    "entry_fg": "#ffffff",
+    "btn_bg": "#e94560",
+    "btn_fg": "#ffffff",
+    "btn_disabled_bg": "#53354a",
+    "label_color": "#f2f4fa",
+    "emergency_color": "#ff2d2d",
+    "accent_color": "#4da3ff",
+    "comment": "label_color = Karten-Labels, emergency_color = Notfall-Farbe/-Ring, accent_color = Routen & UI-Akzente"
+  },
+  "aircraft_icons": {
+    "size": 28,
+    "selected_size": 34,
+    "comment": "Größe der Flugzeug-Icons in Pixeln; selected_size = Größe des ausgewählten Flugzeugs."
+  },
+  "proxy": {
+    "url": "",
+    "token": "",
+    "comment": "URL der Webseite (index.php). Aufloesung: Umgebungsvariable LTU_PROXY_URL -> page.txt (erste Zeile, gitignoriert) -> dieses Feld. Token fuer Push/Console: LTU_PROXY_TOKEN oder proxy.token."
+  },
+  "peer_net": {
+    "enabled": true,
+    "name": "",
+    "comment": "Mesh komplett ueber die Webseite (index.php): Der Server waehlt per Heartbeat zufaellig einen Ersatz-Proxy, wenn der Proxy down ist oder 429 liefert. Der Ersatz pusht Traffic auf die Seite (?action=relay_push), alle anderen holen ihn dort (?action=relay_pull). Keine Ports, keine Router-/Firewall-Konfiguration noetig. URL steht in page.txt (gitignoriert). Aus per LTU_MESH=off."
+  }
+}

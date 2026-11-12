@@ -75,7 +75,7 @@ By default, every client requests traffic through the central Community Proxy, r
 
 ```bash
 git clone https://github.com/PhW3130/MSFS-Live-Traffic-Utility-PUBLIC-BETA.git
-cd Live-Traffic
+cd MSFS-Live-Traffic-Utility-PUBLIC-BETA
 python -m pip install -r requirements.txt
 python main.py
 ```

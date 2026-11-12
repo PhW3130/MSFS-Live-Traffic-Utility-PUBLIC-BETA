@@ -75,7 +75,7 @@ Für die fertig gepackte Anwendung ist **Windows 10/11** erforderlich. Der Karte
 
 ```bash
 git clone https://github.com/PhW3130/MSFS-Live-Traffic-Utility-PUBLIC-BETA.git
-cd Live-Traffic
+cd MSFS-Live-Traffic-Utility-PUBLIC-BETA
 python -m pip install -r requirements.txt
 python main.py
 ```

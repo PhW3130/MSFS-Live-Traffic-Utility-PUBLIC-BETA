@@ -67,14 +67,14 @@ Für die fertig gepackte Anwendung ist **Windows 10/11** erforderlich. Der Karte
 
 ### Option A: Windows-Release (sofort einsatzbereit)
 
-1. Das aktuelle ZIP von [GitHub Releases](https://github.com/PhW3130/Live-Traffic/releases) herunterladen.
+1. Das aktuelle ZIP von [GitHub Releases](https://github.com/PhW3130/MSFS-Live-Traffic-Utility-PUBLIC-BETA/releases) herunterladen.
 2. Das Archiv in einen beschreibbaren Ordner entpacken.
 3. `MSFS Live Traffic Utility.exe` starten. Das Release verwendet standardmäßig den Community-Proxy; eine Netzwerkkonfiguration ist nicht nötig.
 
 ### Option B: Aus dem Quellcode starten
 
 ```bash
-git clone https://github.com/PhW3130/Live-Traffic.git
+git clone https://github.com/PhW3130/MSFS-Live-Traffic-Utility-PUBLIC-BETA.git
 cd Live-Traffic
 python -m pip install -r requirements.txt
 python main.py

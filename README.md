@@ -179,4 +179,4 @@ Copyright (C) 2026 PhW3130. Project-authored code may be used, modified, and red
 
 ## Contributing
 
-The project is actively developed and remains experimental, especially its AI-traffic injection and model matching. Contributions, bug reports, aircraft-mapping updates, release testing, and feature suggestions are welcome. Please open an issue or pull request in the [GitHub repository](https://github.com/PhW3130/Live-Traffic). See the [publishing checklist](docs/PUBLISHING-CHECKLIST.md) before redistributing the packaged application; rights for all bundled third-party material must be documented.
+The project is actively developed and remains experimental, especially its AI-traffic injection and model matching. Contributions, bug reports, aircraft-mapping updates, release testing, and feature suggestions are welcome. Please open an issue or pull request in the [GitHub repository](https://github.com/PhW3130/MSFS-Live-Traffic-Utility-PUBLIC-BETA). See the [publishing checklist](docs/PUBLISHING-CHECKLIST.md) before redistributing the packaged application; rights for all bundled third-party material must be documented.

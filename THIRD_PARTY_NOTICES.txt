@@ -25,3 +25,10 @@ ADS-B source references
 The application can retrieve public data from adsb.lol, adsb.fi Open Data, and
 OpenSky Network. Their respective terms, attribution requirements, quotas, and
 use restrictions apply; see the Data Sources section of README.md.
+
+PDF documentation fonts
+-----------------------
+The generated German project PDF embeds subsets of DejaVu Sans and DejaVu
+Sans Mono when those fonts are installed on the build system. DejaVu changes
+are in the public domain; the fonts are based on Bitstream Vera. The complete
+applicable font license notice is included in Dokumentation/DejaVu-Font-LICENSE.txt.

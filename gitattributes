@@ -1,0 +1,2 @@
+# Keep generated PDFs byte-exact and out of line-ending conversion.
+Dokumentation/*.pdf binary

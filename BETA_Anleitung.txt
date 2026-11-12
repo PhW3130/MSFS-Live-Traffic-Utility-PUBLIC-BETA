@@ -104,7 +104,7 @@ Bei einem Fehler helfen folgende Angaben:
 
 Prüfe das Protokoll vor dem Teilen und entferne private Angaben. Es kann unter anderem
 Zeitpunkte, Flugzeugpositionen, Rufzeichen und lokale Dateipfade enthalten. Fehler
-und Rückmeldungen: https://github.com/PhW3130/Live-Traffic/issues
+und Rückmeldungen: https://github.com/PhW3130/MSFS-Live-Traffic-Utility-PUBLIC-BETA/issues
 
 7. BETA, LIZENZ UND DATENQUELLEN
 -------------------------------

@@ -67,7 +67,7 @@ By default, every client requests traffic through the central Community Proxy, r
 
 ### Option A: Windows Release (Ready to Use)
 
-1. Download the latest ZIP from [GitHub Releases](https://github.com/PhW3130/Live-Traffic/releases).
+1. Download the latest ZIP from [GitHub Releases](https://github.com/PhW3130/MSFS-Live-Traffic-Utility-PUBLIC-BETA/releases).
 2. Extract the archive to a writable folder.
 3. Start `MSFS Live Traffic Utility.exe`. The release uses the Community Proxy by default; no network setup is needed.
 
